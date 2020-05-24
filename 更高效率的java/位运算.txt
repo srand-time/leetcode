@@ -1,0 +1,4 @@
+要求只有state=6,3,5,8时输出true。
+int finals = 0b101101000;
+return (finals & (1 << state)) > 0;
+（&按位与）

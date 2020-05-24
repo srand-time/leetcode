@@ -1,0 +1,44 @@
+1.	Arrays.equals(c1,c2);
+	Arrays.sort(c1);
+
+3.	char []c2=s2.toCharArray();//字符串转成数组
+
+4.	Queue<Integer> q = new LinkedList();
+	Map<Integer, Integer> map = new HashMap<>();//哈希表的定义
+	map.put();		
+	map.get();
+
+5.	
+	HashSet<Integer> set = new HashSet<>();
+
+	注意如果直接res.add(list),之后对list修改会同时修改已经插入到res中的list。解决方法：res.add(new ArrayList<>(list)); //注意浅拷贝
+
+	//为了转换成二维数组返回值
+	List <int[]> res =new ArrayList<>();
+	int []arr=new int[];
+	res.add(arr);
+	res.toArray(new int[res.size()][]);
+	list.get(k);
+
+	//分别求出二维数组的行数列数
+	int [][]a;
+	a.length;//行数
+	a[0].length;//列数
+
+6.	java字符串反转
+	//stringbuilder中有reverse用来反转字符串
+    	public String reverse_string(String s){
+        		StringBuilder sb=new StringBuilder(s);
+        		String after_reverse=sb.reverse().toString();
+       	 	return after_reverse;
+    	}
+
+7.	java中String是一个final类，不能随便修改，一般用连接或者replace函数等方式进行修改。
+
+8.	java最大整数2^31	2147483648-1
+	 mp.getOrDefault(pre, 0)  如果获取不到pre（key）的值就返回0
+
+9.	总结：实际上JAVA在方法里传递的只是对象的副本。
+ 	值传递是对基本型变量而言的,传递的是该变量的一个副本,改变副本不影响原变量.
+ 	引用传递一般是对于对象型变量而言的,传递的是该对象地址的一个副本, 并不是原对象本身 。
+ 	一般认为,java内的基础类型数据传递都是值传递. java中实例对象的传递是引用传递

@@ -1,0 +1,7 @@
+Arrays.sort(s, new Comparator<String>() {
+		    @Override
+		    public int compare(String o1, String o2) {
+			    return (o1 + o2).compareTo(o2 + o1);//升序
+		    }
+	    });
+//直接调用这个就是对String数组s排序

@@ -1,0 +1,8 @@
+一、String转int有两种方式
+(1)Integer.parseInt(str)
+(2)Integer.valueOf(str).intValue()
+
+二、int转String有三种方式
+(1)num + “”
+(2)String.valueOf(num)
+(3)Integer.toString(num)

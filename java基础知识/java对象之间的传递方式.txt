@@ -1,0 +1,24 @@
+ while(p!=null)
+        {
+            if(p.val==key)
+            {
+                if(p.left==null&&p.right==null)
+                    {
+                        if(p==prev.left)
+                            prev.left=null;
+                        else
+                            prev.right=null;
+                        return root;
+                    }
+            }
+            else if(p.val>key)
+                {prev=p;p=p.left;}
+            else    //p.val<key 
+                {prev=p;p=p.right;}
+        }
+        return root;
+
+这是一份没有完成的二叉搜索树的删除的代码。
+要删除p这个节点不能直接令p=null;一般认为,java内的基础类型数据传递都是值传递. java中实例对象的传递是引用传递
+这样p的父节点找p.left或p.right的时候还是可以找到的，因为p只是一个副本。
+所以我们要删除p得对其父节点下手。

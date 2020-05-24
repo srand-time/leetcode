@@ -1,0 +1,126 @@
+Java字符串连接的多种实现方法及效率对比 
+
+    JDK 1.8(Java 8)里新增String.join()方法用于字符串连接。本文基于《Java实现String.join()和效率比较》一文，分析和比较四种自定义实现与String.join()方法的效率，并纠正原文的一些错误。    
+    代码示例如下：
+
+ 1 public class Test {
+ 2     public static void main(String[] args) {
+ 3         String[] strOri = {"a","b","c","d","e","f","g","h"}; //同new string[]{"a","b","c","d","e","f","g","h"}
+ 4         String strRes = ""; int loops = 100000;
+ 5 
+ 6         Date date = new Date();
+ 7 
+ 8         for(int i = 0; i < loops; i++) {strRes = join1(strOri, ":");} date = recordTime(date, 1);    //1
+ 9         for(int i = 0; i < loops; i++) {strRes = join2(strOri, ":");} date = recordTime(date, 2);
+10         for(int i = 0; i < loops; i++) {strRes = join3(strOri, ":");} date = recordTime(date, 3);
+11         for(int i = 0; i < loops; i++) {strRes = join4(strOri, ":");} date = recordTime(date, 4);
+12         for(int i = 0; i < loops; i++) {strRes = join5(strOri, ":");} date = recordTime(date, 5);
+13 
+14         long startTime = System.currentTimeMillis();    //2
+15         for(int i = 0; i < loops; i++) {strRes = join5(strOri, ":");}
+16         long endTime = System.currentTimeMillis(); System.out.println("5c:{" + strRes + "} costs " + (endTime-startTime) + "ms");
+17 
+18         startTime = System.nanoTime();
+19         for(int i = 0; i < loops; i++) {strRes = join5(strOri, ":");}
+20         endTime = System.nanoTime(); System.out.println("5n:{" + strRes + "} costs " + (endTime-startTime) + "ns");
+21     }
+22 
+23     private static void recordTime_Wrong(Date date, int no) {
+24         System.out.println(no + ": costs " + (new Date().getTime()-date.getTime()) + "ms");
+25         date = new Date();
+26     }
+27     private static Date recordTime(Date date, int no) {
+28         System.out.println(no + ": costs " + (new Date().getTime()-date.getTime()) + "ms");
+29         return new Date();
+30     }
+31 
+32     private static String join1(String[] strOri, String delimiter) {
+33         StringBuffer sb = new StringBuffer();   //3
+34         for(String s : strOri) {
+35             sb.append(s+delimiter);   //4
+36         }
+37         return sb.toString().substring(0, sb.toString().length()-1);
+38     }
+39 
+40     private static String join2(String[] strOri, String delimiter) {
+41         StringBuffer sb = new StringBuffer();
+42         for(String s : strOri) {
+43             sb.append(s+delimiter);
+44         }
+45         String s = sb.toString();
+46         return s.substring(0, s.length()-1);
+47     }
+48 
+49     private static String join3(String[] strOri, String delimiter) {
+50         StringBuffer sb = new StringBuffer();
+51         for(int i = 0; i < strOri.length; i++) {
+52             if (i != strOri.length-1) {
+53                 sb.append(strOri[i]+delimiter);
+54             } else {
+55                 sb.append(strOri[i]);
+56             }
+57         }
+58         return sb.toString();
+59     }
+60 
+
+     private static String join4(String[] strOri, String delimiter) {
+         StringBuilder stringBuilder = new StringBuilder();
+         for (int i = 0; i < strOri.length-1; i++) {
+             stringBuilder.append(strOri[i]).append(delimiter);
+         }
+         stringBuilder.append(strOri[strOri.length-1]);
+         return stringBuilder.toString();
+}
+
+69 
+70     private static String join5(String[] strOri, String delimiter) {
+71         return String.join(delimiter, strOri); //5
+72     }
+73 }
+
+    选取三次运行输出结果如下：
+
+1: costs 930ms
+2: costs 902ms
+3: costs 637ms
+4: costs 230ms
+5: costs 364ms
+5c:{a:b:c:d:e:f:g:h} costs 413ms
+5n:{a:b:c:d:e:f:g:h} costs 286466296ns
+
+
+1: costs 834ms
+2: costs 788ms
+3: costs 576ms
+4: costs 248ms
+5: costs 350ms
+5c:{a:b:c:d:e:f:g:h} costs 384ms
+5n:{a:b:c:d:e:f:g:h} costs 283256112ns
+
+
+1: costs 774ms
+2: costs 728ms
+3: costs 605ms
+4: costs 297ms
+5: costs 417ms
+5c:{a:b:c:d:e:f:g:h} costs 280ms
+5n:{a:b:c:d:e:f:g:h} costs 279838638ns
+
+    可见，join4()执行最快，其次是join5()。join1()和join2()执行效率接近，前者调用两次toString()，故效率略低。
+    总结如下：
+    1. 原文recordTime(即本文recordTime_Wrong)方法中，无法通过"date = new Date()"修改外部的date引用(根因详见《java中的传值与传引用》)。这会导致每次调用recordTime()时，起始时间始终是"Date date = new Date()"获得的对象(表现为join*耗时递增)。
+    2. 查看Java源码可知，new Date()其实就是调用System.currentTimeMillis()：
+1 public Date() {
+2     this(System.currentTimeMillis()); //相当于Date(System.currentTimeMillis())
+3 }
+    可以使用new Date().getTime()获取当前时间戳(毫秒)。注意，该毫秒数一般以1970-01-01 00:00:00为参考点，但东八区要加上时区，即以1970-01-01 08:00:00为参考时间。此外，通过getTime()获取毫秒数效率不如System.currentTimeMillis()，后者返回自1970年1月1日0时起的毫秒数。
+    System.nanoTime()的计时精度不保证一定高于System.currentTimeMillis()，但可保证数值递增(后者相减时可能产生负值)。
+    若要对代码进行更准确的计时，可参考《How do I write a correct micro-benchmark in Java?》一文。
+    3. StringBuffer对象是线程安全的，其方法都是同步的(synchronized)。临时变量应使用StringBuilder(效率更高)，避用StringBuffer。
+    4. 在循环内部，不要使用append(a+b)的形式，而应改为append(a).append(b)。
+    5. String.join()内部使用StringBuilder实现，因此join5()性能接近join4()。当然，String.join()的功能比join4()更多。
+
+
+转自https://www.cnblogs.com/clover-toeic/p/7894437.html
+CSDN博客

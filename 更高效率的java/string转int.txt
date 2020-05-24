@@ -1,0 +1,8 @@
+JAVA 中int类型转String类型的通常方法,有三种：
+1、String.valueOf(int i)
+2、Integer.toString(int i)
+3、i+"";     //i 为 int类型
+是string类型的字符串跟上个int类型的i代表的字符串（先把i转换为string），int+string型就是先将int型的i转为string然后跟上后面的string。
+
+三种方法效率排序为：
+Integer.toString(int i)   >   String.valueOf(int i)   >  i+"";

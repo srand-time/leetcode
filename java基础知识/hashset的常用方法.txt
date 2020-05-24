@@ -1,0 +1,37 @@
+声明：HashSet<Integer> set = new HashSet<>();
+
+
+1.add并返回Boolean值
+如果不存在，它只是向给定集添加一个元素。如果元素已经存在，add（）只返回false 
+System.out.println(set.add(1));  //true
+System.out.println(set.add(2));  //true
+System.out.println(set.add(3));  //true
+System.out.println(set.add(1));  //false - as already present
+  
+//Note that the order of elements isn't guaranteed
+System.out.println(set); //[1, 2, 3]
+2. boolean contains（Object obj）
+如果hashset中存在指定元素，contains()方法返回true   
+System.out.println(set.contains(1)); //true
+System.out.println(set.contains(4)); //false
+3. boolean remove(Object obj):
+顾名思义，它会删除元素obj（如果存在）并返回true。如果不存在这样的元素，它只返回false 
+System.out.println(set.remove(1)); //true
+System.out.println(set.remove(4)); //false
+4. boolean isEmpty（）
+它为空集返回true，否则返回false： 
+System.out.println(set.isEmpty()); // false
+5. int size（）
+它只返回给定集合中存在的元素数量 
+6. void clear（）
+clear（）方法删除引用集中存在的所有值，从而使其成为空集。
+
+
+4.扩展的循环
+我们还可以使用扩展的for循环来遍历元素 
+for(Integer e : set) {
+    System.out.println(e);
+}
+
+
+链接http://www.leftso.com/blog/578.html

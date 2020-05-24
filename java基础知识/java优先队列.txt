@@ -1,0 +1,8 @@
+Queue<State> q = new PriorityQueue<>(
+            new Comparator<State>() {
+                @Override
+            public int compare(State e1,State e2) {
+                return (e1.distant+e1.step-e2.distant-e2.step);
+                }
+            }
+        );//定义优先队列的数据结构
