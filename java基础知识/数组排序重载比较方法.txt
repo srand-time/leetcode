@@ -5,3 +5,15 @@ Arrays.sort(s, new Comparator<String>() {
 		    }
 	    });
 //直接调用这个就是对String数组s排序
+
+
+
+//记住，如果对一维数组使用的话应该是Integer
+//而不是int。一定要对对象使用这种写法。
+//但是如果只是写个Arrays.sort就没有关系了。可以直接Arrays.sort(friend);
+Arrays.sort(friend,new Comparator<Integer>(){
+           @Override
+            public int compare(Integer a1,Integer a2){
+                return a2-a1;
+            }
+});

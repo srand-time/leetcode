@@ -46,3 +46,13 @@
 10.        ArrayList<HashMap<Integer,Integer> >list=new ArrayList<HashMap<Integer,Integer>>();
             HashMap<Integer, Integer> map = new HashMap<>();
             list.add(map);
+
+11.       java读取字符串：String s = in.nextLine();
+	Stack <Integer>stack=new Stack();
+	char c=(char)((int)'A'+(di-10));
+
+12.	LRU:	LinkedHashMap<Integer,Integer>map=new LinkedHashMap();	
+	//这样才能保证按顺序添加，去掉第一个元素再添加最后一个元素它才会变成最后一个
+	
+	map.remove(map.keySet().toArray()[0]);
+	//去掉哈希表中的第一个元素
